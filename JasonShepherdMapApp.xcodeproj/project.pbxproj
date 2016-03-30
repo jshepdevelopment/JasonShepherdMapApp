@@ -14,6 +14,7 @@
 		040EFD831CAC163000778918 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 040EFD811CAC163000778918 /* LaunchScreen.storyboard */; };
 		040EFD8E1CAC163000778918 /* JasonShepherdMapAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040EFD8D1CAC163000778918 /* JasonShepherdMapAppTests.swift */; };
 		040EFD991CAC163000778918 /* JasonShepherdMapAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040EFD981CAC163000778918 /* JasonShepherdMapAppUITests.swift */; };
+		040EFDA71CAC2D5E00778918 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040EFDA61CAC2D5E00778918 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		040EFD941CAC163000778918 /* JasonShepherdMapAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JasonShepherdMapAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		040EFD981CAC163000778918 /* JasonShepherdMapAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JasonShepherdMapAppUITests.swift; sourceTree = "<group>"; };
 		040EFD9A1CAC163000778918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		040EFDA61CAC2D5E00778918 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040EFDA71CAC2D5E00778918 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +80,7 @@
 		040EFD6C1CAC163000778918 = {
 			isa = PBXGroup;
 			children = (
+				040EFDA61CAC2D5E00778918 /* CoreLocation.framework */,
 				040EFD771CAC163000778918 /* JasonShepherdMapApp */,
 				040EFD8C1CAC163000778918 /* JasonShepherdMapAppTests */,
 				040EFD971CAC163000778918 /* JasonShepherdMapAppUITests */,
@@ -400,6 +404,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JasonShepherdMapApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.slcc.csis2640.JasonShepherdMapApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -411,6 +416,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JasonShepherdMapApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.slcc.csis2640.JasonShepherdMapApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
