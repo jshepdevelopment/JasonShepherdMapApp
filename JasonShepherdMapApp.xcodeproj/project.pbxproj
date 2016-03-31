@@ -15,6 +15,8 @@
 		040EFD8E1CAC163000778918 /* JasonShepherdMapAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040EFD8D1CAC163000778918 /* JasonShepherdMapAppTests.swift */; };
 		040EFD991CAC163000778918 /* JasonShepherdMapAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040EFD981CAC163000778918 /* JasonShepherdMapAppUITests.swift */; };
 		040EFDA71CAC2D5E00778918 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040EFDA61CAC2D5E00778918 /* CoreLocation.framework */; };
+		040EFDA91CAC5D6E00778918 /* redflash.png in Resources */ = {isa = PBXBuildFile; fileRef = 040EFDA81CAC5D6E00778918 /* redflash.png */; };
+		040EFDAB1CAC67F400778918 /* white-rounded-rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 040EFDAA1CAC67F400778918 /* white-rounded-rectangle.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		040EFD981CAC163000778918 /* JasonShepherdMapAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JasonShepherdMapAppUITests.swift; sourceTree = "<group>"; };
 		040EFD9A1CAC163000778918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		040EFDA61CAC2D5E00778918 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		040EFDA81CAC5D6E00778918 /* redflash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redflash.png; path = ../../../Downloads/redflash.png; sourceTree = "<group>"; };
+		040EFDAA1CAC67F400778918 /* white-rounded-rectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "white-rounded-rectangle.png"; path = "../../../Downloads/white-rounded-rectangle.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,8 @@
 		040EFD771CAC163000778918 /* JasonShepherdMapApp */ = {
 			isa = PBXGroup;
 			children = (
+				040EFDAA1CAC67F400778918 /* white-rounded-rectangle.png */,
+				040EFDA81CAC5D6E00778918 /* redflash.png */,
 				040EFD781CAC163000778918 /* AppDelegate.swift */,
 				040EFD7A1CAC163000778918 /* ViewController.swift */,
 				040EFD7C1CAC163000778918 /* Main.storyboard */,
@@ -233,6 +239,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040EFDAB1CAC67F400778918 /* white-rounded-rectangle.png in Resources */,
+				040EFDA91CAC5D6E00778918 /* redflash.png in Resources */,
 				040EFD831CAC163000778918 /* LaunchScreen.storyboard in Resources */,
 				040EFD801CAC163000778918 /* Assets.xcassets in Resources */,
 				040EFD7E1CAC163000778918 /* Main.storyboard in Resources */,

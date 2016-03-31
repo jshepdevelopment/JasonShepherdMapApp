@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,20 +18,111 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="L0d-IV-QIu">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="L0d-IV-QIu">
+                                <rect key="frame" x="20" y="268" width="335" height="379"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfA-gk-MMX">
+                                <rect key="frame" x="165" y="218" width="69" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="itn-h4-7oH"/>
+                                    <constraint firstAttribute="width" constant="69" id="w9I-QS-Twn"/>
+                                </constraints>
+                                <state key="normal" title="Start" backgroundImage="white-rounded-rectangle.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="startButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6yH-NR-4wk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gvW-Me-F82">
+                                <rect key="frame" x="242" y="218" width="113" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="FEr-ju-Sdr"/>
+                                    <constraint firstAttribute="width" constant="113" id="lhv-J0-1Xm"/>
+                                </constraints>
+                                <state key="normal" title="Trip History" backgroundImage="white-rounded-rectangle.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="BVY-iW-dB9" kind="presentation" identifier="showHistorySegue" id="ZhN-50-BKc"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="redflash.png" translatesAutoresizingMaskIntoConstraints="NO" id="eIJ-rB-KKK">
+                                <rect key="frame" x="20" y="152" width="96" height="96"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="96" id="J68-X2-RLb"/>
+                                    <constraint firstAttribute="width" constant="96" id="Xdk-Z1-ZcQ"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="L0d-IV-QIu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="4oa-Kw-iMX"/>
+                            <constraint firstItem="L0d-IV-QIu" firstAttribute="top" secondItem="eIJ-rB-KKK" secondAttribute="bottom" constant="20" id="5Uc-FZ-ZYs"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="L0d-IV-QIu" secondAttribute="bottom" constant="20" id="Hnd-p7-gBl"/>
+                            <constraint firstItem="L0d-IV-QIu" firstAttribute="top" secondItem="gvW-Me-F82" secondAttribute="bottom" constant="20" id="Nfc-ht-dx3"/>
+                            <constraint firstItem="L0d-IV-QIu" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Oil-dC-esZ"/>
+                            <constraint firstItem="L0d-IV-QIu" firstAttribute="top" secondItem="gfA-gk-MMX" secondAttribute="bottom" constant="20" id="Wz6-aJ-g3L"/>
+                            <constraint firstItem="gvW-Me-F82" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="XEa-hR-duc"/>
+                            <constraint firstItem="gvW-Me-F82" firstAttribute="leading" secondItem="gfA-gk-MMX" secondAttribute="trailing" constant="8" id="YuR-YN-iuM"/>
+                            <constraint firstItem="eIJ-rB-KKK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Z2C-op-3ag"/>
+                            <constraint firstItem="eIJ-rB-KKK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="o8P-p3-FJN"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="map" destination="L0d-IV-QIu" id="7j2-xt-frs"/>
+                        <outlet property="redFlash" destination="eIJ-rB-KKK" id="SOh-0B-PbQ"/>
+                        <outlet property="startBtn" destination="gfA-gk-MMX" id="l3E-nx-56b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="139.5" y="337.5"/>
         </scene>
+        <!--Modal View Controller-->
+        <scene sceneID="Xr5-gG-otR">
+            <objects>
+                <viewController id="BVY-iW-dB9" customClass="ModalViewController" customModule="JasonShepherdMapApp" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sai-E1-2cD"/>
+                        <viewControllerLayoutGuide type="bottom" id="1M7-0o-FlY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sBd-ZQ-3A5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="emJ-Ih-TMF">
+                                <rect key="frame" x="0.0" y="128" width="375" height="335"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BVY-iW-dB9" id="600-E1-qJb"/>
+                                    <outlet property="delegate" destination="BVY-iW-dB9" id="IZ7-PX-XLr"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oFL-07-l3k">
+                                <rect key="frame" x="164" y="499" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="mg8-HO-XGM"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="tripHistoryTable" destination="emJ-Ih-TMF" id="rgu-gy-KbP"/>
+                        <outlet property="tripView" destination="sBd-ZQ-3A5" id="1fe-bs-OMn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mUL-GU-NRU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="646.5" y="337.5"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="redflash.png" width="250" height="250"/>
+        <image name="white-rounded-rectangle.png" width="120" height="50"/>
+    </resources>
 </document>
