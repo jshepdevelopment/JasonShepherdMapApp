@@ -21,20 +21,7 @@ class ModalViewController: UIViewController, UITableViewDelegate {
     @IBOutlet var tripView: UIView!
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        
-        //print(historyListPassed)
-        
-        /* Update Table Data
-        tripHistoryTable.beginUpdates()
-        tripHistoryTable.insertRowsAtIndexPaths([
-            NSIndexPath(forRow: historyListPassed.count-1, inSection: 0)
-            ], withRowAnimation: .Automatic)
-        tripHistoryTable.endUpdates()
-        tripHistoryTable.reloadData()
-         */
-        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,12 +30,15 @@ class ModalViewController: UIViewController, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: UITableViewCellStyle.Value2, reuseIdentifier: "cell")
         
         //cell.textLabel?.text = toDoList[indexPath.row]
-        cell.textLabel?.text = historyListPassed[indexPath.row]
+        //cell.textLabel?.text = "Trip \(historyListPassed[0]) Start Location:"
+        cell.detailTextLabel!.numberOfLines = 3
+        cell.detailTextLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        cell.detailTextLabel?.text = historyListPassed[indexPath.row]
         
-        cell.detailTextLabel?.text = "Hello"
+        
         return cell
     }
     
@@ -67,6 +57,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     // Variable to handle flashing light state
     var faded = false
     
+    var timerValue = 1
+    
     // Variables to store locations
     var locationNameString = ""
     var cityString = ""
@@ -80,10 +72,23 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var redFlash: UIImageView!
     @IBOutlet weak var startBtn: UIButton!
     
+    @IBOutlet weak var sliderVal: UILabel!
+    @IBOutlet weak var slider: UISlider!
+    
+    // Update slider value
+
+    @IBAction func sliderValueChanged(sender: UISlider) {
+        timerValue = Int(slider.value)
+        sliderVal.text = "\(timerValue)"
+    }
+    
     @IBAction func startButton(sender: AnyObject) {
         
         // Build a timer to run flashing button
         let timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(ViewController.updateRedFlash), userInfo: nil, repeats: true)
+        
+        // Build timer for reporting locations
+        let reportTimer = NSTimer.scheduledTimerWithTimeInterval(Double(timerValue*60), target: self, selector: #selector(ViewController.updateReport), userInfo: nil, repeats: true)
     }
     
     // Location attribute
@@ -132,7 +137,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         // Add the long press recognizer to the map
         map.addGestureRecognizer(longPress)
-        
+
     }
     
     
@@ -155,7 +160,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             faded = false
         }
         
-        
+    }
+    
+    // Update the trip report
+    func updateReport(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //Update trip array
+        multiStringList.append("\(locationNameString) \(streetString) \(cityString) \(zipString)  \(countryString)")
+
     }
 
     // Function to perform when a long press happens on the map
@@ -179,53 +190,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         //annotation.title = "" //set title attribute
         //annotation.subtitle = "" //set subtitle attribute
         map.addAnnotation(annotation) //add the annotation object to the map object
-
-        // Used to Geocoder for reverse geocoding
-        let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: userCoordinate.latitude, longitude: userCoordinate.longitude)
-        
-        geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
-            
-            // Details of place
-            var placeMark: CLPlacemark!
-            placeMark = placemarks?[0]
-            
-            // Address dictionary
-            //print(placeMark.addressDictionary)
-            
-            // Location name
-            if let locationName = placeMark.addressDictionary!["Name"] as? NSString {
-                //print(locationName)
-                self.locationNameString = String(locationName)
-                print(self.locationNameString)
-            }
-            
-            // Street address
-            if let street = placeMark.addressDictionary!["Thoroughfare"] as? NSString {
-                //print(street)
-                self.streetString = String(street)
-                //print(self.streetString)
-            }
-            
-            // City 
-            if let city = placeMark.addressDictionary!["City"] as? NSString {
-                //print(city)
-                self.cityString = String(city)
-                //print(self.cityString)
-            }
-            
-            // Zip code
-            if let zip = placeMark.addressDictionary!["ZIP"] as? NSString {
-                print(zip)
-                self.zipString = String(zip)
-            }
-            // Country
-            if let country = placeMark.addressDictionary!["Country"] as? NSString {
-                //print(country)
-                self.countryString = String(country)
-            }
-            
-        })
         
     }
     
@@ -239,8 +203,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         // Delta variables to hold the difference of latitude and longitude from one side of the screen to the other
         // Controls zoomed level of latitude and longitude. Lower value zooms in.
-        let latDelta:CLLocationDegrees = 0.1
-        let lonDelta:CLLocationDegrees = 0.1
+        let latDelta:CLLocationDegrees = 0.01
+        let lonDelta:CLLocationDegrees = 0.01
         
         // Sets both latitude and longitude zoom
         let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
@@ -253,24 +217,67 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         // Set the map to the region
         self.map.setRegion(region, animated: true)
-     
         
+        print("locations = \(latitude) \(longitude)")
+        
+        // Used to Geocoder for reverse geocoding
+        let geoCoder = CLGeocoder()
+        //let location = CLLocation(latitude: latitude, longitude: longitude)
+        
+        geoCoder.reverseGeocodeLocation(userLocation, completionHandler: { (placemarks, error) -> Void in
+            if error != nil {
+                print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
+                return
+            }
+            
+            if placemarks!.count > 0 {
+                let placeMark = placemarks![0] as! CLPlacemark
+                
+            
+                // Location name
+                if let locationName = placeMark.addressDictionary!["Name"] as? NSString {
+                    //print(locationName)
+                    self.locationNameString = String(locationName)
+                    //print(self.locationNameString)
+                } else {
+                    self.locationNameString = String("unknown location")
+                }
+                // Street address
+                if let street = placeMark.addressDictionary!["Thoroughfare"] as? NSString {
+                    //print(street)
+                    self.streetString = String(street)
+                    //print(self.streetString)
+                }
+                
+                // City
+                if let city = placeMark.addressDictionary!["City"] as? NSString {
+                    //print(city)
+                    self.cityString = String(city)
+                    //print(self.cityString)
+                }
+                
+                // Zip code
+                if let zip = placeMark.addressDictionary!["ZIP"] as? NSString {
+                    //print(zip)
+                    self.zipString = String(zip)
+                }
+                // Country
+                if let country = placeMark.addressDictionary!["Country"] as? NSString {
+                    //print(country)
+                    self.countryString = String(country)
+                }
+            } else {
+                print("Problem with the data received from geocoder")
+            }
+        })
+       
     }
     
-    /* Show the history modal
-    func showHistoryModal() {
-        let modalViewController = ModalViewController()
-        modalViewController.modalPresentationStyle = .OverCurrentContext
-        presentViewController(modalViewController, animated: true, completion: nil)
-    }*/
-    
+   
     //Sending data to table in segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "showHistorySegue") {
             let svc = segue.destinationViewController as! ModalViewController;
-            
-            multiStringList.append("Location: \(locationNameString) Street: \(streetString) City: \(cityString) Zip: \(zipString) Country: \(countryString)")
-            
             //print(multiStringList)
             
             svc.historyListPassed = multiStringList
