@@ -25,8 +25,8 @@ class ModalViewController: UIViewController, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("historyListPassed.count: \(historyListPassed.count)")
         return historyListPassed.count
-        print(historyListPassed.count)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -35,7 +35,7 @@ class ModalViewController: UIViewController, UITableViewDelegate {
         //cell.textLabel?.text = toDoList[indexPath.row]
         //cell.textLabel?.text = "Trip \(historyListPassed[0]) Start Location:"
         cell.detailTextLabel!.numberOfLines = 3
-        cell.detailTextLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        //cell.detailTextLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping
         cell.detailTextLabel?.text = historyListPassed[indexPath.row]
         
         
@@ -56,8 +56,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     // Variable to handle flashing light state
     var faded = false
-    
+
+    // Handles report update timer
     var timerValue = 1
+    var userLocation:CLLocation = CLLocation(latitude: 0, longitude: 0)
+    var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
+    var reportValue = 0
+    var tracking = false
+    
+    var reportTimer:NSTimer!
+    var animTimer:NSTimer!
+    
     
     // Variables to store locations
     var locationNameString = ""
@@ -84,11 +93,20 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @IBAction func startButton(sender: AnyObject) {
         
+        if !tracking {
         // Build a timer to run flashing button
-        let timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(ViewController.updateRedFlash), userInfo: nil, repeats: true)
+            animTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(ViewController.updateRedFlash), userInfo: nil, repeats: true)
+            
+            // Build timer for reporting locations
+            reportTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.updateReport), userInfo: nil, repeats: true)
+            startBtn.setTitle("Stop", forState: UIControlState.Normal)
+        }
         
-        // Build timer for reporting locations
-        let reportTimer = NSTimer.scheduledTimerWithTimeInterval(Double(timerValue*60), target: self, selector: #selector(ViewController.updateReport), userInfo: nil, repeats: true)
+        /*if tracking {
+            tracking = false
+            startBtn.setTitle("Start", forState: UIControlState.Normal)
+            
+        }*/
     }
     
     // Location attribute
@@ -118,7 +136,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
         
         // Sets both latitude and longitude zoom
-        let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        location = CLLocationCoordinate2DMake(latitude, longitude)
         
         // Sets the latitude and longitude on the map itself
         let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
@@ -163,10 +181,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     // Update the trip report
-    func updateReport(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //Update trip array
-        multiStringList.append("\(locationNameString) \(streetString) \(cityString) \(zipString)  \(countryString)")
-
+    func updateReport() {
+        getLocation()
+        reportValue += 1
     }
 
     // Function to perform when a long press happens on the map
@@ -197,20 +214,20 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         // Set user location with latitude and longitude
-        let userLocation:CLLocation = locations[0] as CLLocation
+        userLocation = locations[0] as CLLocation
         let latitude = userLocation.coordinate.latitude
         let longitude = userLocation.coordinate.longitude
         
         // Delta variables to hold the difference of latitude and longitude from one side of the screen to the other
         // Controls zoomed level of latitude and longitude. Lower value zooms in.
-        let latDelta:CLLocationDegrees = 0.01
-        let lonDelta:CLLocationDegrees = 0.01
+        let latDelta:CLLocationDegrees = 0.1
+        let lonDelta:CLLocationDegrees = 0.1
         
         // Sets both latitude and longitude zoom
         let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
         
         // Sets both latitude and longitude zoom
-        let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        location = CLLocationCoordinate2DMake(latitude, longitude)
         
         // Sets the latitude and longitude on the map itself
         let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
@@ -218,12 +235,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         // Set the map to the region
         self.map.setRegion(region, animated: true)
         
-        print("locations = \(latitude) \(longitude)")
+        //print("locations = \(latitude) \(longitude)")
         
+    }
+    
+    // get the locatation via reverse geocoding
+    func getLocation() {
+
         // Used to Geocoder for reverse geocoding
         let geoCoder = CLGeocoder()
-        //let location = CLLocation(latitude: latitude, longitude: longitude)
-        
         geoCoder.reverseGeocodeLocation(userLocation, completionHandler: { (placemarks, error) -> Void in
             if error != nil {
                 print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
@@ -231,16 +251,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
             
             if placemarks!.count > 0 {
-                let placeMark = placemarks![0] as! CLPlacemark
+                let placeMark = placemarks![0]
                 
-            
                 // Location name
                 if let locationName = placeMark.addressDictionary!["Name"] as? NSString {
                     //print(locationName)
                     self.locationNameString = String(locationName)
                     //print(self.locationNameString)
-                } else {
-                    self.locationNameString = String("unknown location")
                 }
                 // Street address
                 if let street = placeMark.addressDictionary!["Thoroughfare"] as? NSString {
@@ -266,14 +283,31 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     //print(country)
                     self.countryString = String(country)
                 }
+                
+                //Update trip array
+                
+                self.multiStringList.append("Report \(self.reportValue): \(self.locationNameString) \(self.streetString) \(self.cityString) \(self.zipString)  \(self.countryString)")
+                //print("Trip report updated.")
+                print("multiStringList.count: \(self.multiStringList.count)")
+                
             } else {
                 print("Problem with the data received from geocoder")
             }
+            
         })
-       
+        
+        // Creating annotation object from MapKit
+        let annotation = MKPointAnnotation()
+        
+        // Using annotation object and set its attributes
+        annotation.coordinate = location // location of SLCC via latitude and longitude set above
+        //annotation.title = "" //set title attribute
+        //annotation.subtitle = "" //set subtitle attribute
+        map.addAnnotation(annotation) //add the annotation object to the map object
+
     }
     
-   
+    
     //Sending data to table in segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "showHistorySegue") {
@@ -281,6 +315,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             //print(multiStringList)
             
             svc.historyListPassed = multiStringList
+            print("segue passed")
+            if animTimer != nil {
+                animTimer.invalidate()
+            }
+            if reportTimer != nil {
+                reportTimer.invalidate()
+            }
+            
             
         }
     }
