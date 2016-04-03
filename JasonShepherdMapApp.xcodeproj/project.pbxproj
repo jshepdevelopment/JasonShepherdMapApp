@@ -17,6 +17,7 @@
 		040EFDA71CAC2D5E00778918 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040EFDA61CAC2D5E00778918 /* CoreLocation.framework */; };
 		040EFDA91CAC5D6E00778918 /* redflash.png in Resources */ = {isa = PBXBuildFile; fileRef = 040EFDA81CAC5D6E00778918 /* redflash.png */; };
 		040EFDAB1CAC67F400778918 /* white-rounded-rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 040EFDAA1CAC67F400778918 /* white-rounded-rectangle.png */; };
+		040EFDB51CB0101200778918 /* allseeingeye.png in Resources */ = {isa = PBXBuildFile; fileRef = 040EFDB41CB0101200778918 /* allseeingeye.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		040EFDA61CAC2D5E00778918 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		040EFDA81CAC5D6E00778918 /* redflash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redflash.png; path = ../../../Downloads/redflash.png; sourceTree = "<group>"; };
 		040EFDAA1CAC67F400778918 /* white-rounded-rectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "white-rounded-rectangle.png"; path = "../../../Downloads/white-rounded-rectangle.png"; sourceTree = "<group>"; };
+		040EFDB41CB0101200778918 /* allseeingeye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = allseeingeye.png; path = ../../../Downloads/allseeingeye.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 		040EFD771CAC163000778918 /* JasonShepherdMapApp */ = {
 			isa = PBXGroup;
 			children = (
+				040EFDB41CB0101200778918 /* allseeingeye.png */,
 				040EFDAA1CAC67F400778918 /* white-rounded-rectangle.png */,
 				040EFDA81CAC5D6E00778918 /* redflash.png */,
 				040EFD781CAC163000778918 /* AppDelegate.swift */,
@@ -203,6 +206,7 @@
 				TargetAttributes = {
 					040EFD741CAC163000778918 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = H3T7P37XU8;
 					};
 					040EFD881CAC163000778918 = {
 						CreatedOnToolsVersion = 7.3;
@@ -243,6 +247,7 @@
 				040EFDA91CAC5D6E00778918 /* redflash.png in Resources */,
 				040EFD831CAC163000778918 /* LaunchScreen.storyboard in Resources */,
 				040EFD801CAC163000778918 /* Assets.xcassets in Resources */,
+				040EFDB51CB0101200778918 /* allseeingeye.png in Resources */,
 				040EFD7E1CAC163000778918 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -411,11 +416,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = JasonShepherdMapApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.slcc.csis2640.JasonShepherdMapApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -423,11 +431,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = JasonShepherdMapApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.slcc.csis2640.JasonShepherdMapApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

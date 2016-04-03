@@ -67,7 +67,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var reportTimer:NSTimer!
     var animTimer:NSTimer!
     
-    
     // Variables to store locations
     var locationNameString = ""
     var cityString = ""
@@ -80,12 +79,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var redFlash: UIImageView!
     @IBOutlet weak var startBtn: UIButton!
-    
     @IBOutlet weak var sliderVal: UILabel!
     @IBOutlet weak var slider: UISlider!
     
     // Update slider value
-
     @IBAction func sliderValueChanged(sender: UISlider) {
         timerValue = Int(slider.value)
         sliderVal.text = "\(timerValue)"
@@ -98,8 +95,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             animTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(ViewController.updateRedFlash), userInfo: nil, repeats: true)
             
             // Build timer for reporting locations
-            reportTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.updateReport), userInfo: nil, repeats: true)
-            startBtn.setTitle("Stop", forState: UIControlState.Normal)
+            reportTimer = NSTimer.scheduledTimerWithTimeInterval(Double(timerValue*60), target: self, selector: #selector(ViewController.updateReport), userInfo: nil, repeats: true)
+            tracking = true
         }
         
         /*if tracking {
@@ -124,8 +121,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         // Building a map region with detailed variables
         
         // Variables to hold latitude and longitude
-        var latitude:CLLocationDegrees = 40.672640
-        var longitude:CLLocationDegrees = -111.942339
+        let latitude:CLLocationDegrees = 40.672640
+        let longitude:CLLocationDegrees = -111.942339
         
         // Delta variables to hold the difference of latitude and longitude from one side of the screen to the other
         // Controls zoomed level of latitude and longitude. Lower value zooms in.
@@ -204,8 +201,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         // Using annotation object and set its attributes
         annotation.coordinate = userCoordinate // location of SLCC via latitude and longitude set above
-        //annotation.title = "" //set title attribute
-        //annotation.subtitle = "" //set subtitle attribute
+        annotation.title = "Some Place" //set title attribute
+        annotation.subtitle = "You pressed here." //set subtitle attribute
         map.addAnnotation(annotation) //add the annotation object to the map object
         
     }
@@ -241,7 +238,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     // get the locatation via reverse geocoding
     func getLocation() {
-
+        
+        // Set timestamp
+        let timestamp = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .MediumStyle, timeStyle: .ShortStyle)
+        
+        // Set speed and altitude
+        let speed = locationManager.location!.speed
+        let altitude = locationManager.location!.altitude
+        
+        
         // Used to Geocoder for reverse geocoding
         let geoCoder = CLGeocoder()
         geoCoder.reverseGeocodeLocation(userLocation, completionHandler: { (placemarks, error) -> Void in
@@ -286,7 +291,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 
                 //Update trip array
                 
-                self.multiStringList.append("Report \(self.reportValue): \(self.locationNameString) \(self.streetString) \(self.cityString) \(self.zipString)  \(self.countryString)")
+                self.multiStringList.append("\(timestamp): \(self.locationNameString) \(self.streetString) \(self.cityString) \(self.zipString)  \(self.countryString), speed: \(speed), altitude: \(altitude)")
                 //print("Trip report updated.")
                 print("multiStringList.count: \(self.multiStringList.count)")
                 
@@ -301,8 +306,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         // Using annotation object and set its attributes
         annotation.coordinate = location // location of SLCC via latitude and longitude set above
-        //annotation.title = "" //set title attribute
-        //annotation.subtitle = "" //set subtitle attribute
+        annotation.title = "\(locationNameString)" //set title attribute
+        annotation.subtitle = "\(cityString)" //set subtitle attribute
         map.addAnnotation(annotation) //add the annotation object to the map object
 
     }
@@ -310,6 +315,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     //Sending data to table in segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        
         if (segue.identifier == "showHistorySegue") {
             let svc = segue.destinationViewController as! ModalViewController;
             //print(multiStringList)
@@ -322,8 +328,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             if reportTimer != nil {
                 reportTimer.invalidate()
             }
-            
-            
+            tracking = false
         }
     }
     
